@@ -20,7 +20,7 @@ class GoogleFinance:
         # Wait for the page to load
         wait = WebDriverWait(self.driver, 10)
 
-    def get_you_may_be_interested_in_stock_names(self) -> list[str]:
+    def get_you_may_be_interested_in_stock_names(self) -> List[str]:
         names = []
 
         # find the "you may be interested in" section element
