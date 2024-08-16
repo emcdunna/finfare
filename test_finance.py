@@ -1,11 +1,6 @@
 import pytest
 from google_finance import GoogleFinance
 
-financePage = GoogleFinance()
-financePage.setup()
-names = financePage.get_you_may_be_interested_in_stock_names()
-financePage.teardown()
-
 
 class TestGoogleFinance:
     TEST_STOCKS = {"NFLX", "MSFT", "TSLA"}
@@ -23,6 +18,7 @@ class TestGoogleFinance:
         gf.teardown()
 
     # Instruction #3
+    @pytest.mark.all
     def test_get_all_ymbi_stock_names(self, finance):
         # Act
         stock_names = finance.get_you_may_be_interested_in_stock_names()
@@ -34,6 +30,8 @@ class TestGoogleFinance:
         assert len(stock_names) == 6  # At least one stock name should be found
 
     # Instruction #5
+    @pytest.mark.all
+    @pytest.mark.instruction_5_and_6
     def test_get_ymbi_stock_names_not_present_in_test_stocks(self, finance):
         # Act
         stock_names = finance.get_you_may_be_interested_in_stock_names()
@@ -46,6 +44,8 @@ class TestGoogleFinance:
         assert len(reduced_stocks) > 0
 
     # Instruction #6
+    @pytest.mark.all
+    @pytest.mark.instruction_5_and_6
     def test_get_which_test_stocks_are_not_present_in_ymbi_section(self, finance):
         # Act
         stock_names = finance.get_you_may_be_interested_in_stock_names()
