@@ -1,0 +1,39 @@
+name: Manual Test Execution
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+    inputs:
+      test_label:
+        description: 'Specify the pytest marker to run (e.g., all, instruction_5_and_6)'
+        required: true
+        default: 'all'  # Default marker if none is provided
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'  # Specify your Python version here
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run tests with specified marker
+      run: |
+        pytest -v -m "${{ github.event.inputs.test_label }}" --maxfail=1 --durations=10
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: pytest-results
+        path: ./tests/report.html  # Adjust this path to where your report is saved
